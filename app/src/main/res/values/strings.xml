@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Gezderi Üretim</string>
+    <string name="giri_yap">Giriş yap</string>
+    <string name="e_ba_la">İşe başla</string>
+    <string name="_2_kalite">2. KALİTE</string>
+    <string name="_1_kalite">1. KALİTE</string>
+    <string name="ariza">ARIZA</string>
+    <string name="mola">MOLA</string>
+    <string name="b_t_r">BİTİR</string>
+    <string name="work_order">work order</string>
+    <string name="name">NAME</string>
+    <string name="metraj">metraj</string>
+    <string name="encoder_cm">%s</string>
+    <string name="kalite">kalite</string>
+    <string name="giri_ekran">Giriş Ekranı</string>
+    <string name="mach_head">mach_head</string>
+    <string name="machbee_ssid_global_2019_2021">MachBEE© SSID Global / 2019-2022</string>
+    <string name="_0_0">0.0</string>
+    <string name="emri">İş Emri</string>
+    <string name="status">Status</string>
+    <string name="al_yor">ÇALIŞIYOR</string>
+    <string name="al_t_r">ÇALIŞTIR</string>
+    <string name="ba_la">BAŞLA</string>
+    <string name="k">Çıkış</string>
+    <string name="deneme">deneme</string>
+    <string name="emri_smi">İş Emri İsmi</string>
+    <string name="_1_ts_madagascar">1 TS MADAGASCAR</string>
+    <string name="gezer_terl_k_san_ve_t_c_a">GEZER TERLİK SAN VE TİC A.Ş</string>
+    <string name="l_tfen_okutunuz_v4">Lütfen Okutunuz V4</string>
+    <string name="spinner">Spinner</string>
+    <string name="hafizaya_al">HAFIZAYA AL</string>
+    <string name="giri_yapmak_in_kart_okutunuz">Giriş Yapmak İçin Kartı Okutunuz</string>
+    <string name="barkod_numaras_giriniz">Barkod Numarası Giriniz.</string>
+    <string name="hata_kodunu_giriniz">Hata Kodunu Giriniz.</string>
+    <string name="duru_kodu_giriniz">Duruş Kodu Giriniz.</string>
+    <string name="emri_ba_lat">İş Emri Başlat</string>
+    <string name="emri_bitir">İş Emri Bitir</string>
+
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="ssidPrime">#3272FF</color>
+    <color name="ssidPrime_hover">#1245B3</color>
+    <color name="yellow">#f3ff05</color>
+    <color name="red">#E01A00</color>
+    <color name="red_hover">#A11300</color>
+    <color name="grey">#696969</color>
+    <color name="grey_hover">#4F4F4F</color>
+    <color name="green">#44C21D</color>
+    <color name="green_hover">#2D8214</color>
+    <color name="orange">#FF7F00</color>
+    <color name="orange_hover">#CC6600</color>
+    <color name="green_new">#15EB01</color>
+    <color name="red_new">#EB2B28</color>
+    <color name="mach_white">#e9ecef</color>
+    <color name="darker_grey">#444</color>
+    <color name="light_grey">#E5E4E2</color>
+</resources>

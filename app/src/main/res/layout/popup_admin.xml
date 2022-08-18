@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="850dp"
+    android:background="@drawable/custom_popup"
+    android:layout_height="650dp">
+
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="420dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_hover_ticket"
+        android:fontFamily="@font/opensans_bold"
+        android:text="Barkod - Kart Okuyucu Test"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/btnUpdate"
+        app:layout_constraintStart_toStartOf="@+id/btnUpdate"
+        app:layout_constraintTop_toBottomOf="@+id/btnUpdate" />
+
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="420dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_hover_memory"
+        android:fontFamily="@font/opensans_bold"
+        android:text="Güncelleme Kontrol"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/btnQuitApp"
+        android:layout_width="205dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/btn_hover_stop"
+        android:fontFamily="@font/opensans_bold"
+        android:text="Uygulamayı Kapat"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/btnSettings"
+        app:layout_constraintTop_toTopOf="@+id/btnSettings" />
+
+    <Button
+        android:id="@+id/btnSettings"
+        android:layout_width="205dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_hover_cikis"
+        android:fontFamily="@font/opensans_bold"
+        android:text="Ayarları Aç"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/btnTest"
+        app:layout_constraintTop_toBottomOf="@+id/btnTest" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:fontFamily="@font/opensans_regular"
+        android:text="İşlem Seçiniz"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvIpAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="92dp"
+        android:fontFamily="@font/opensans_regular"
+        android:text="0.0.0.0"
+        android:textColor="@color/black"
+        android:textSize="18sp  "
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMacAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/opensans_regular"
+        android:text="00:00:00:00:00"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/tvIpAdmin"
+        app:layout_constraintTop_toBottomOf="@+id/tvIpAdmin" />
+
+    <TextView
+        android:id="@+id/tvVersionAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/opensans_regular"
+        android:text="1.0"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/tvMacAdmin"
+        app:layout_constraintTop_toBottomOf="@+id/tvMacAdmin" />
+
+    <EditText
+        android:id="@+id/etTest"
+        android:layout_width="422dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="213dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="215dp"
+        android:ems="10"
+        android:hint="Okutunuz"
+        android:inputType="textPersonName"
+        android:textSize="32sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnQuitApp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

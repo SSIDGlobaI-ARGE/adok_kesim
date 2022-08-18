@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <usb-accessory
+        manufacturer="ARGOX"
+        vendor-id="0x1664"/>
+</resources>

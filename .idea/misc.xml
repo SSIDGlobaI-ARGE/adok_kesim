@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable-v24/btn_hover_cikis.xml" value="0.238671875" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable-v24/btn_hover_memory.xml" value="0.289453125" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable-v24/btn_hover_prevticket.xml" value="0.289453125" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable-v24/nav_quit_btn.xml" value="0.1175" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable-v24/nav_shadow_normal.xml" value="0.2861003861003861" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable-v24/nav_shadow_stop.xml" value="0.2875" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable-v24/quit_icon.xml" value="0.28625" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable/circle_bar.xml" value="0.238671875" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable/circular.xml" value="0.23671875" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable/circular_bar.xml" value="0.238671875" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable/clearbg.xml" value="0.276953125" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable/custom_popup.xml" value="0.240625" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/drawable/toastbg.xml" value="0.273828125" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/activity_control_panel.xml" value="0.25" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/activity_order.xml" value="0.22" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/custom_dialog.xml" value="0.25" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/error_toast.xml" value="0.75" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/faultcode_item.xml" value="0.27247536945812806" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/nav_shadow_stop.xml" value="0.27247536945812806" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/popup_admin.xml" value="0.33" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/popup_faults.xml" value="0.208203125" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/popup_order.xml" value="0.25" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/popup_password.xml" value="0.33" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/popup_previous_tickets.xml" value="0.27247536945812806" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/popup_prevticket.xml" value="0.27247536945812806" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/popup_quality.xml" value="0.27247536945812806" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/popup_user.xml" value="0.33" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/layout/success_toast.xml" value="0.33" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/mipmap-anydpi-v26/kaplama_icon.xml" value="0.30625" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/xml/accessory_filter.xml" value="0.21796875" />
+        <entry key="..\:/Users/ardayucesan/AndroidStudioProjects/Gezderi_Kaplama/app/src/main/res/xml/usb_device_manager.xml" value="0.203515625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
