@@ -142,20 +142,6 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
-//        startNotification();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     public void init() {
         //order views
         tvProductName = findViewById(R.id.tv_urun_adi);
@@ -193,6 +179,7 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
         tvEncoder.setClickable(false);
 
         initViewDependencies();
+
 
     }
 
@@ -250,7 +237,7 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
 
     @Override
     public void onRollFinishClick() {
-        panelPresenter.postQuantityAndPrint();
+        panelPresenter.postQuantityAndPrint(false);
     }
 
     @Override
@@ -458,7 +445,7 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
 
     @Override
     public void setSpeed(float displacement) {
-        Log.d(TAG, "setSpeed: speed");
+//        Log.d(TAG, "setSpeed: speed");
         tvSpeed.setText(String.format("%.0f", (displacement*60) / 100) + " m/dk");
     }
 

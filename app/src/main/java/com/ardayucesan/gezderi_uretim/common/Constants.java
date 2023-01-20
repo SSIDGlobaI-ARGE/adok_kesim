@@ -2,11 +2,11 @@ package com.ardayucesan.gezderi_uretim.common;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://212.175.18.154:8081/gezderi-iot/kaplama-debug";
+//    public static final String BASE_URL = "http://212.175.18.154:8081/gezderi-iot/kaplama-debug";
     //    public static final String BASE_URL = "http://192.168.3.230/gezderi-iot/gofraj/";
-//    public static final String TYPE_URL = "http://212.175.18.154:8081/gezderi-iot/uretim-debug";
+    public static final String TYPE_URL = "http://212.175.18.154:8081/gezderi-iot/uretim-debug/";
 //    public static final String TYPE_URL = "http://192.168.3.230/gezderi-iot/uretim/";
-    public static final String TYPE_URL = "http://192.168.3.230/gezderi-iot/uretim/";
+//    public static final String TYPE_URL = "http://192.168.3.230/gezderi-iot/uretim/";
     public static final String SALT = "a1s248829ac23545kjd40015ds";
     public static final String CHECK_ETH = "NETWORK İLE İLETİŞİM KURULAMADI NETWORK KABLOSUNU KONTROL EDİN";
     public static final String STATUS_FAULT_CODE = "6";

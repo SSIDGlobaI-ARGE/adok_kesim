@@ -38,7 +38,7 @@ public class Order implements Serializable {
     private float kQuantity;
     @SerializedName("K_cuts")
     @Expose
-    private ArrayList<String> cutIds1K;
+    private ArrayList<String> cutIds1K = new ArrayList<>();
     private String speed;
     private String thickness;
     private String weight;
@@ -160,6 +160,13 @@ public class Order implements Serializable {
 
     public void setCutIds1K(ArrayList<String> cutIds1K) {
         this.cutIds1K = cutIds1K;
+    }
+
+    public void addCutIds1K(ArrayList<String> cutIds1K){
+
+        for (String c:cutIds1K) {
+            this.cutIds1K.add(c);
+        }
     }
 
     public void deleteCutIds1K() {

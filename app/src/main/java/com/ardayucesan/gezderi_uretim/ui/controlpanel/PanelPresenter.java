@@ -32,10 +32,13 @@ import com.google.gson.JsonObject;
 import org.greenrobot.eventbus.EventBus;
 
 import java.net.ConnectException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
@@ -51,13 +54,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * this class is presenter for panel activity
+ * this class is presenter for panel activity.
  *
  * @author ardayucesan
  * @version 1.9
  */
 
-@SuppressWarnings("ALL")
 public class PanelPresenter implements _PanelContract.Presenter {
 
     //TAG for log messages
@@ -91,7 +93,9 @@ public class PanelPresenter implements _PanelContract.Presenter {
     float oldLength = 0;
     float oldLengthFast = 0;
     float currentDisplacement = 0;
-
+    ArrayList<String> shiftList = new ArrayList<>();
+    SimpleDateFormat formatter = new SimpleDateFormat("hhmm");
+    int retryShift = 10;
     //speed and distance by avg roll speed
     float avgSpeedByRoll = 0;
 
@@ -104,15 +108,6 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
     Boolean IS_PRINT;
 
-    //    Instant workOrderStart;
-//    Instant workOrderEnd;
-//    Duration timeElapsed;
-    // some time passes
-    //    float averageSpeed;
-//    float passedMinute;
-//    long orderStartTime = 0;
-//    long millis=0;
-    //printable classes
     StandartPrintable standartPrintable;
     //Usb handler for printer device
     UsbHandler usbHandler;
@@ -148,14 +143,13 @@ public class PanelPresenter implements _PanelContract.Presenter {
     }
 
     public void start() {
-        PinHelper.execCommand("echo 100 > /sys/class/gpio/export");
-        PinHelper.execCommand("echo 99 > /sys/class/gpio/export");
-
+//        PinHelper.execCommand("echo 100 > /sys/class/gpio/export");
+//        PinHelper.execCommand("echo 99 > /sys/class/gpio/export");
         mView.init();
+        getMachineName();
         startEncoder();
         calculateAverage();
 //        counter.start();
-        getMachineName();
     }
 
     @Override
@@ -270,15 +264,15 @@ public class PanelPresenter implements _PanelContract.Presenter {
     @Override
     public void fetchFaults(Boolean isForced) {
 
-        if (userController() == false) {
+        if (!userController()) {
             return;
         }
-        if (orderController() == false) {
+        if (!orderController()) {
             return;
         }
 
-        List<String> params = Arrays.asList("mac", "user_id", "token");
-        List<String> values = Arrays.asList(Helper.AccesMac(), user.getId(), user.getToken());
+        List<String> params = Arrays.asList("mac", "user_id", "token","production_id");
+        List<String> values = Arrays.asList(Helper.AccesMac(), user.getId(), user.getToken(),order.getProductionId());
 
         iPanelRepository.getFaultList(Helper.setJsonRequestBody(params, values))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -418,10 +412,11 @@ public class PanelPresenter implements _PanelContract.Presenter {
                             Ticket ticket = ticketResponse.getData().getRows().get(0);
                             Log.d(TAG, "onNext: ticket : " + ticketResponse.getData().getRows().get(0).getMetraj());
                             printTicket(ticket);
+                            cutIdList.clear();
                             order.deleteCutIds1K();
+                            Log.d(TAG, "onNext: order cut lıst after delete"+order.getCutIds1K());
                         } else {
                             progressDialog.startDialog(ticketResponse.getMessage());
-
                         }
                     }
 
@@ -469,7 +464,9 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
                     @Override
                     public void onNext(@NonNull JsonObject jsonObject) {
+                        Log.d(TAG, "onNext: im in get machine");
                         if (jsonObject.get("success").getAsBoolean()) {
+
                             mView.setMachineName(jsonObject.get("data").getAsJsonObject().get("name").getAsString());
                             Log.d(TAG, "onNext: machine name " + jsonObject.get("data").getAsJsonObject().get("name").getAsString());
 
@@ -482,6 +479,24 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
                             IS_PRINT = jsonObject.get("data").getAsJsonObject().get("printer").getAsBoolean();
                             Log.d(TAG, "handleEvent: isPrint " + IS_PRINT);
+
+                            Timer t = new Timer();
+
+                            t.scheduleAtFixedRate(
+                                    new TimerTask() {
+                                        public void run() {
+                                            Log.d(TAG, "run: here");
+                                            if (retryShift == 10) {
+                                                Log.d(TAG, "run: here2");
+
+                                                getTime();
+                                            } else {
+                                                Log.d(TAG, "run: retry shift plus plus");
+                                                retryShift++;
+                                            }
+                                        }
+                                    },
+                                    1000 * 30, 1000 * 30);
 
                             EventBus.getDefault().postSticky(new GlobalEvent(jsonObject.get("data").getAsJsonObject().get("url").getAsString(), jsonObject.get("data").getAsJsonObject().get("printer").getAsBoolean()));
 
@@ -510,14 +525,21 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
                     @Override
                     public void onComplete() {
+
                         mView.hideProgress();
+                        Log.d(TAG, "onComplete: complete up");
+//
+
                         Log.d(TAG, "onComplete: completed globalrepo");
                     }
                 });
     }
 
+    ArrayList<String> cutIdList = new ArrayList<>();
+    float oldQtyValue = 0;
+
     @Override
-    public void postQuantityAndPrint() {
+    public void postQuantityAndPrint(boolean shiftMode) {
         if (userController() == false) {
             return;
         }
@@ -525,17 +547,19 @@ public class PanelPresenter implements _PanelContract.Presenter {
             return;
         }
 
-        if (IS_PRINT) {
-            if (usbHandler.getUSBDevice()) {
-                return;
-            }
-            if (usbHandler.getDevice().getVendorId() != 5732) {
-                progressDialog.startDialog("Kabloyu kontrol edin.");
-                Log.d(TAG, "postQuantityAndPrint: Usb Kablosunu kontrol edin ve bekleyin. ");
-                return;
+        if (!shiftMode) {
+            if (IS_PRINT) {
+                if (usbHandler.getUSBDevice()) {
+                    return;
+                }
+                Log.d(TAG, "postQuantityAndPrint: usb is : " + usbHandler.getUSBDevice());
+                if (usbHandler.getDevice().getVendorId() != 5732) {
+                    progressDialog.startDialog("Kabloyu kontrol edin.");
+                    Log.d(TAG, "postQuantityAndPrint: Usb Kablosunu kontrol edin ve bekleyin. ");
+                    return;
+                }
             }
         }
-
 
         float average = 0;
         if (speedList != null) {
@@ -554,6 +578,11 @@ public class PanelPresenter implements _PanelContract.Presenter {
         }
 
         List<String> params = Arrays.asList("mac", "user_id", "token", "quality", "value", "fault", "production_id", "barcode", "speed");
+
+        if (!shiftMode) {
+            length -= oldQtyValue;
+            oldQtyValue = 0;
+        }
 
         List<String> values = Arrays.asList(
                 Helper.AccesMac(),
@@ -584,13 +613,31 @@ public class PanelPresenter implements _PanelContract.Presenter {
                     public void onNext(@NonNull JsonObject jsonObject) {
                         if (jsonObject.get("success").getAsBoolean()) {
 
-                            order.setCutQuantity(jsonObject.get("data").getAsJsonObject().get("kesim_miktari").getAsString());
-                            order.setCutIds1K(new ArrayList<>(Arrays.asList(jsonObject.get("data").getAsJsonObject().get("cut_id").getAsString())));
-                            Log.d(TAG, "onNext: total cut" + jsonObject.get("data").getAsJsonObject().get("kesim_miktari"));
-                            fetchTicketData("");
-                            mView.setTotalCut(jsonObject.get("data").getAsJsonObject().get("kesim_miktari").getAsString());
-                            mView.showSuccessToast("İşlem Başarılı", "İşlem Gerçekleştirildi.");
-                            deleteQuantity();
+                            if (shiftMode) {
+                                Log.d(TAG, "onNext: shift request");
+                                oldQtyValue = length;
+                                order.setCutQuantity(jsonObject.get("data").getAsJsonObject().get("kesim_miktari").getAsString());
+                                Log.d(TAG, "onNext: CUT İD "+jsonObject.get("data").getAsJsonObject().get("kesim_miktari").getAsString());
+                                cutIdList.add(jsonObject.get("data").getAsJsonObject().get("cut_id").getAsString());
+                                order.setCutIds1K(cutIdList);
+                                Log.d(TAG, "onNext: total cut" + jsonObject.get("data").getAsJsonObject().get("kesim_miktari"));
+                                clearUser();
+
+                            } else {
+
+                                order.setCutQuantity(jsonObject.get("data").getAsJsonObject().get("kesim_miktari").getAsString());
+                                Log.d(TAG, "onNext: cutIdList : " + cutIdList);
+                                cutIdList.add(jsonObject.get("data").getAsJsonObject().get("cut_id").getAsString());
+                                Log.d(TAG, "onNext: cutIdList : " + cutIdList);
+                                Log.d(TAG, "onNext: aray " + jsonObject.get("data").getAsJsonObject().get("cut_id"));
+                                order.setCutIds1K(cutIdList);
+                                Log.d(TAG, "onNext: order cut id -> " + order.getCutIds1K());
+                                Log.d(TAG, "onNext: total cut" + jsonObject.get("data").getAsJsonObject().get("kesim_miktari"));
+                                mView.setTotalCut(jsonObject.get("data").getAsJsonObject().get("kesim_miktari").getAsString());
+                                mView.showSuccessToast("İşlem Başarılı", "İşlem Gerçekleştirildi.");
+                                fetchTicketData("");
+                                deleteQuantity();
+                            }
 
                         } else {
                             progressDialog.startDialog(jsonObject.get("message").getAsString());
@@ -600,7 +647,8 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d(TAG, "onError: error occurred in postquantity");
+                        e.printStackTrace();
+                        Log.d(TAG, "onError: error occurred in postquantity" + e.getMessage());
                         if (e instanceof ConnectException) {
 //                            progressDialog.startDialog(Constants.CONNECTION_ERR);
                             mView.showErrorToast("İşlem Başarısız", Constants.CONNECTION_ERR);
@@ -615,17 +663,6 @@ public class PanelPresenter implements _PanelContract.Presenter {
                     }
                 });
     }
-
-//    private void stopTimer() {
-//        orderStartTime = 0;
-//        totalDisplacement = 0;
-//        passedMinute = 0;
-//
-//    }
-//
-//    private void startTimer() {
-//        orderStartTime = System.currentTimeMillis();
-//    }
 
     @Override
     public void postProductionStatus(int faultId, String faultName, String status) {
@@ -671,7 +708,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d(TAG, "onError: error ocurred in postquantity");
+                        Log.d(TAG, "onError: error ocurred in postquantity" + e.getMessage());
                         if (e instanceof ConnectException) {
                             progressDialog.startDialog(Constants.CONNECTION_ERR);
                         }
@@ -681,6 +718,49 @@ public class PanelPresenter implements _PanelContract.Presenter {
                     @Override
                     public void onComplete() {
                         mView.hideProgress();
+                    }
+                });
+    }
+
+
+    public void getTime() {
+
+        iPanelRepository.getTime()
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<JsonObject>() {
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: subscrib");
+                    }
+
+                    @Override
+                    public void onNext(@NonNull JsonObject jsonObject) {
+                        if (jsonObject.get("success").getAsBoolean()) {
+                            if (jsonObject.get("data").getAsBoolean()) {
+                                ((Activity) context).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        postQuantityAndPrint(true);
+                                        retryShift = 0;
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, "onError: error ocurred in postquantity" + e.getMessage());
+                        if (e instanceof ConnectException) {
+                            progressDialog.startDialog(Constants.CONNECTION_ERR);
+                        }
+                        mView.hideProgress();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -773,18 +853,51 @@ public class PanelPresenter implements _PanelContract.Presenter {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> mView.updateTotalQuantity(totalLength)));
-    }
+        Log.d(TAG, "startEncoder: here aq");
 
-//    public void calculateSpeed() {
-//        Log.d(TAG, "calculateSpeed: cağrildim");
-//        currentDisplacement = (length - oldLength);
-//        currentDisplacement = currentDisplacement / 5;
-////        totalDisplacement += displacement;
-//        oldLength = length;
-////        Log.d(TAG, "calculateSpeed: displ" + displacement / 100);
-////        mView.setSpeed(currentDisplacement * 60);
-//        Log.d(TAG, "calculateSpeed: currentdisp " + currentDisplacement * 60);
-//    }
+//        Observable.interval(10, TimeUnit.SECONDS)
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<Long>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        compositeDisposable.add(d);
+//                        Log.d(TAG, "startEncoder: here subs aq");
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Long aLong) {
+//                        Log.d(TAG, "startEncoder: here next aq");
+//
+//                        Date currentTime = Calendar.getInstance().getTime();
+//                        String a = formatter.format(currentTime);
+//                        Log.d(TAG, "onNext: date " + a);
+//
+//                        for (String shift:shiftList)
+//                        {
+//                            Log.d(TAG, "onNext: shift : " + shift);
+//                            Log.d(TAG, "onNext: a : " + a);
+//                            if(a.equals(shift))
+//                            {
+//                                Log.d(TAG, "onNext: VARDİYE ZAMANI");
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                        mView.showErrorToast("Hata",e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        Log.d(TAG, "onComplete: finished");
+//                    }
+//                });
+
+    }
 
     float speed = 0;
 
@@ -842,7 +955,6 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
             if (length == 0) {
 //                if (!chronometer.isRunning) {
-//
 //                    chronometer.setMsElapsed(0);
 //                    chronometer.start();
 //                    Log.d(TAG, "getLengthFromJNI: is chronometer started :" + chronometer.isRunning + " elapsed : " + chronometer.msElapsed);
@@ -941,4 +1053,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
     public native String stringFromJNI(int oldstate);
 
+    public void upMeter() {
+        length += 100;
+    }
 }

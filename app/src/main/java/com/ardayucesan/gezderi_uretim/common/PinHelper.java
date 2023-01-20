@@ -21,10 +21,12 @@ public class PinHelper {
             InputStream response = null;
             response = exec.getInputStream();
             OutputStream outputStream = exec.getOutputStream();
+            Log.e("execCommand", "before before");
             outputStream.write(command.getBytes(Charset.forName("utf-8")));
             outputStream.write("\n".getBytes());
             outputStream.write("exit\n".getBytes());
             outputStream.flush();
+            Log.e("execCommand", "before wait");
             int waitFor = exec.waitFor();
             Log.e("execCommand", "execCommand command:" + command + ";waitFor=" + waitFor);
             if (waitFor == 0) {
@@ -36,6 +38,8 @@ public class PinHelper {
             e.printStackTrace();
             Log.e("execCommand", "execCommand exception=" + e.getMessage());
             return false;
+        }finally {
+            Log.d("execCommand", "execCommand: finally im dead");
         }
         return status;
     }

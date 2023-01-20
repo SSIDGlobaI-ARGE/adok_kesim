@@ -108,7 +108,7 @@ public interface _PanelContract {
 
         void postProductionStatus(int faultId, String faultName, String status);
 
-        void postQuantityAndPrint();
+        void postQuantityAndPrint(boolean shiftMode);
 
 //        void setViews();
 

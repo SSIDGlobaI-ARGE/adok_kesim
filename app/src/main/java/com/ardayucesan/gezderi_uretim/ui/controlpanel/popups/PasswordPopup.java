@@ -62,8 +62,6 @@ public class PasswordPopup {
                 }
             }
         });
-
-
     }
 
     public void hidePopup() {

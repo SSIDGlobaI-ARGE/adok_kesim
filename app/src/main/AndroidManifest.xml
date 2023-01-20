@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
-    <uses-feature android:name="android.hardware.usb.accessory" />
+<!--    <uses-feature android:name="android.hardware.usb.accessory" />-->
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -29,19 +29,19 @@
         android:supportsRtl="true"
         android:theme="@style/mTheme">
 
-        <uses-library android:name="com.android.future.usb.accessory" />
+<!--        <uses-library android:name="com.android.future.usb.accessory" />-->
 
         <activity
             android:name="com.ardayucesan.gezderi_uretim.ui.controlpanel.PanelActivity"
             android:directBootAware="true"
-            android:exported="true">
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode|keyboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <!--                <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />-->
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <!--            <intent-filter>-->
-            <!--                <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />-->
             <!--            </intent-filter>-->
 
             <!--            <meta-data-->

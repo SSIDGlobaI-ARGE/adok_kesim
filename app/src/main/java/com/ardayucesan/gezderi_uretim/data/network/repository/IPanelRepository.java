@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 @SuppressWarnings("ALL")
@@ -28,6 +29,9 @@ public interface IPanelRepository {
 
     @POST("getprint")
     Observable<TicketResponse> getTicketData(@Body JsonObject body);
+
+    @GET("gettime")
+    Observable<JsonObject> getTime();
 
 
 }

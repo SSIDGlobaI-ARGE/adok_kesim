@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.util.Log;
 
 import com.ardayucesan.gezderi_uretim.ui.controlpanel.dialog_alerts.ProgressDialog;
 
@@ -38,6 +39,8 @@ public class UsbHandler {
             HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
             for (String key : deviceList.keySet()) {
                 device = deviceList.get(key);
+                Log.d(TAG, "getUSBDevice: device : "+ device.getVendorId());
+                Log.d(TAG, "getUSBDevice: device : "+ device.getDeviceName());
                 if (device.getVendorId() == 5732) {
                     break;
                 }
