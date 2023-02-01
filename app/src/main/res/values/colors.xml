@@ -18,4 +18,5 @@
     <color name="mach_white">#e9ecef</color>
     <color name="darker_grey">#444</color>
     <color name="light_grey">#E5E4E2</color>
+    <color name="color_active">#28a745</color>
 </resources>

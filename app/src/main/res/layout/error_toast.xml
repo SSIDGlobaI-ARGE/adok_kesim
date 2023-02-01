@@ -5,6 +5,7 @@
     android:id="@+id/error_toast_id"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:padding="10dp"
     android:background="@drawable/toastbg">
 
     <androidx.constraintlayout.widget.ConstraintLayout

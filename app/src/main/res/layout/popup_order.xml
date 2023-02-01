@@ -2,21 +2,27 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_width="1200dp"
+    android:layout_height="700dp"
     android:background="@drawable/custom_popup">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_grey"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:context=".ui.workorder.OrderActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
-            android:layout_width="1283dp"
+            android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@drawable/nav_orange"
+            android:clickable="false"
+            android:background="@drawable/btn_hover_orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -35,65 +41,77 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="338dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="566dp"
                 android:fontFamily="@font/opensans_bold"
-                android:text="İş Emri Giriniz"
+                android:text="İş Emri Seçin."
                 android:textColor="@color/white"
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imgMenu"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/btnQuitOrder"
+                android:layout_width="71dp"
+                android:layout_height="61dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/close_window" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--        <SearchView-->
+        <!--            android:id="@+id/searchViewOrder"-->
+        <!--            android:layout_width="569dp"-->
+        <!--            android:layout_height="63dp"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:iconifiedByDefault="false"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            android:focusedByDefault="false"-->
+        <!--            app:layout_constraintHorizontal_bias="0.501"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />-->
 
         <ProgressBar
             android:id="@+id/progressBarOrder"
             style="?android:attr/progressBarStyle"
             android:layout_width="100dp"
+            android:elevation="20dp"
             android:layout_height="100dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/etOrderCode"
-            app:layout_constraintStart_toEndOf="@+id/textDelete"
-            app:layout_constraintTop_toTopOf="@+id/etOrderCode" />
-
-        <EditText
-            android:id="@+id/etOrderCode"
-            android:layout_width="420dp"
-            android:layout_height="114dp"
-            android:layout_marginStart="680dp"
-            android:layout_marginTop="72dp"
-            android:iconifiedByDefault="false"
-            android:inputType="number|textVisiblePassword"
-            android:maxLength="6"
+            android:layout_marginStart="468dp"
+            android:layout_marginTop="24dp"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            tools:ignore="SpeakableTextPresentCheck" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-        <TextView
-            android:id="@+id/tvError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HATALI İŞ EMRİ KODU"
-            android:textColor="@color/red"
-            android:textSize="40dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/etOrderCode"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="1180dp"
+            android:layout_height="580dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/custom_popup"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.907"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/etOrderCode" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <ImageView
-            android:id="@+id/textDelete"
-            android:layout_width="46dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/etOrderCode"
-            app:layout_constraintStart_toEndOf="@+id/etOrderCode"
-            app:layout_constraintTop_toTopOf="@+id/etOrderCode"
-            app:srcCompat="@android:drawable/ic_delete" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOrder"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

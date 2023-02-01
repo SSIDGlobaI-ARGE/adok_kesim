@@ -1,9 +1,23 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // W
+        maven { url 'https://jitpack.io' }
+    }
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        repositories {
+            google()
+            mavenCentral()
+            jcenter() // W
+            maven { url 'https://jitpack.io' }// arning: this repository is going to shut down soon
+        }
     }
 }
-rootProject.name = "Gezderi_Uretim"
+rootProject.name = "adok_kesim"
 include ':app'

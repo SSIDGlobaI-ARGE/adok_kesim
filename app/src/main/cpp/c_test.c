@@ -127,7 +127,7 @@ static const int stateD = 1;
 //}
 
 JNIEXPORT jstring JNICALL
-Java_com_ardayucesan_gezderi_1uretim_ui_controlpanel_PanelPresenter_stringFromJNI(JNIEnv *env,jobject thiz,jint old_state) {
+Java_com_ardayucesan_adok_1kesim_ui_controlpanel_PanelPresenter_stringFromJNI(JNIEnv *env,jobject thiz,jint old_state) {
     char path[VALUE_MAX];
     char path2[VALUE_MAX];
     char value_str[3];

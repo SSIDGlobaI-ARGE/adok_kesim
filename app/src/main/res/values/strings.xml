@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Gezderi Üretim</string>
+    <string name="app_name">MachBEE Adok</string>
     <string name="giri_yap">Giriş yap</string>
     <string name="e_ba_la">İşe başla</string>
     <string name="_2_kalite">2. KALİTE</string>
@@ -14,7 +14,7 @@
     <string name="kalite">kalite</string>
     <string name="giri_ekran">Giriş Ekranı</string>
     <string name="mach_head">mach_head</string>
-    <string name="machbee_ssid_global_2019_2021">MachBEE© SSID Global / 2019-2022</string>
+    <string name="machbee_ssid_global_2019_2021">MachBEE© SSID Global / 2019-2023</string>
     <string name="_0_0">0.0</string>
     <string name="emri">İş Emri</string>
     <string name="status">Status</string>
