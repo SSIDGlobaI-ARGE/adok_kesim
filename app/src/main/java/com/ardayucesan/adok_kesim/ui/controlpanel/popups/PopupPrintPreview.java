@@ -4,6 +4,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,12 +22,18 @@ import com.ardayucesan.adok_kesim.R;
 import com.ardayucesan.adok_kesim.common.Constants;
 import com.ardayucesan.adok_kesim.ui.controlpanel.PanelPresenter;
 import com.ardayucesan.adok_kesim.ui.controlpanel.printer.StandartPrintable;
+import com.argox.sdk.barcodeprinter.BarcodePrinterGeneralException;
+import com.argox.sdk.barcodeprinter.BarcodePrinterIllegalArgumentException;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
+
+import io.reactivex.annotations.NonNull;
 
 public class PopupPrintPreview {
     private static final int width = 700;
@@ -45,7 +52,6 @@ public class PopupPrintPreview {
         View popupView = inflater.inflate(R.layout.popup_barcode_preview, null);
 
         Button btnPrint = popupView.findViewById(R.id.btnPrintBarcode);
-        Button btnReportBarcode = popupView.findViewById(R.id.btnReportBarcode);
         ImageView btnQuitPreview = popupView.findViewById(R.id.btnQuitPreview);
         ImageView imgHolder = popupView.findViewById(R.id.imgViewHolder);
         ImageView imgError = popupView.findViewById(R.id.imgViewPreviewError);
@@ -57,9 +63,9 @@ public class PopupPrintPreview {
 //        Resources res = context.getResources(); // need this to fetch the drawable
 //        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.exclamation);
 //        imgHolder.setImageBitmap(bmp);
-        String errUrl = "https://stackoverflow.com/questions/36339402/glide-image-loading-timeout-increase" ;
-        String testUrl = "https://www.adok.com.tr/images/Adok_logo.png" ;
-        String url = Constants.IMAGE_URL +barcode+".png" ;
+        String errUrl = "https://stackoverflow.com/questions/36339402/glide-image-loading-timeout-increase";
+        String testUrl = "https://www.adok.com.tr/images/Adok_logo.png";
+        String url = Constants.IMAGE_URL + barcode + ".png";
 
         Log.d("__PREVİEW", "showPopUp: image url : " + url);
 
@@ -90,18 +96,29 @@ public class PopupPrintPreview {
         popupWindow.setElevation(20);
 
         popupWindow.showAtLocation(((Activity) context).getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-
         btnPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                StandartPrintable standartPrintable = new StandartPrintable(context);
-//                standartPrintable.printBarcodeLabel(url,panelPresenter);
-            }
-        });
-        btnReportBarcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                StandartPrintable standartPrintable = new StandartPrintable(context);
+                Glide.with(context)
+                        .asBitmap()
+                        .load(url)
+                        .into(new CustomTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+//                            imageView.setImageBitmap(resource);
+                                Log.d("PRİNTER", "onResourceReady: here before");
+//                                    printer.getEmulation().getGraphicsUtil().storeGraphic(resource, "graphic");
+//                                    printer.getEmulation().getGraphicsUtil().printStoreGraphic(100, 20, "graphic");
+                                Log.d("PRİNTER", "onResourceReady: after ");
+                                standartPrintable.printBarcodeLabel(resource, panelPresenter);
 
+                            }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                            }
+                        });
             }
         });
         btnQuitPreview.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +129,7 @@ public class PopupPrintPreview {
         });
     }
 
-    public void hidePopup(){
+    public void hidePopup() {
         popupWindow.dismiss();
     }
 

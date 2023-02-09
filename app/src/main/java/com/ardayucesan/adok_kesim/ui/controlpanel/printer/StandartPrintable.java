@@ -2,11 +2,14 @@ package com.ardayucesan.adok_kesim.ui.controlpanel.printer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.ardayucesan.adok_kesim.R;
 import com.ardayucesan.adok_kesim.ui.controlpanel.PanelPresenter;
 import com.argox.sdk.barcodeprinter.BarcodePrinter;
 import com.argox.sdk.barcodeprinter.BarcodePrinterGeneralException;
@@ -33,7 +36,7 @@ public class StandartPrintable {
         usbHandler = new UsbHandler(this.context);
     }
 
-    public void printBarcodeLabel(String imageUrl, PanelPresenter presenter) {
+    public void printBarcodeLabel(Bitmap image, PanelPresenter presenter) {
 
         if (usbHandler.getUSBDevice()) {
             return;
@@ -87,37 +90,24 @@ public class StandartPrintable {
 ////                    new PrintTypeHolder("text", Typeface.DEFAULT, 470, 360, 25, false, false, false, false, test, ticket.getP5())
 //            );
 
-            Glide.with(context)
-                    .asBitmap()
-                    .load(imageUrl)
-                    .into(new CustomTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-//                            imageView.setImageBitmap(resource);
-                            try {
-                                Log.d("PRİNTER", "onResourceReady: here before");
-                                printer.getEmulation().getGraphicsUtil().storeGraphic(resource, "graphic");
-                                printer.getEmulation().getGraphicsUtil().printStoreGraphic(20, 20, "graphic");
-                                Log.d("PRİNTER", "onResourceReady: after ");
-
-                            } catch (BarcodePrinterIllegalArgumentException e) {
-                                throw new RuntimeException(e);
-                            } catch (BarcodePrinterGeneralException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                        }
-                    });
-
             //call methods that you want.
             //setting.
+//            printer.getEmulation().getSetUtil().setMediaCalibration();
             printer.getEmulation().getSetUtil().setHardwareOption(PPLBMediaType.Direct_Thermal_Media, PPLBPrintMode.Tear_Off, 0);
             printer.getEmulation().getSetUtil().setOrientation(false);
             printer.getEmulation().getSetUtil().setClearImageBuffer();
             printer.getEmulation().getSetUtil().setBackfeed(true, 30);
+
+            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.toprak_small);
+
+            Log.d("printer", "printBarcodeLabel: bmp size : " + image.getWidth() + " heighthb: " + image.getHeight());
+
+            Bitmap imageScaled =  rotateBitmap(getResizedBitmap(image,520,800),90);
+
+            printer.getEmulation().getGraphicsUtil().storeGraphic(imageScaled, "graphic");
+            printer.getEmulation().getGraphicsUtil().printStoreGraphic(5, 5, "graphic");
+//            imageScaled.recycle();
+
 
 //            for (int i = 0; i < ticketGraphics.size(); i++) {
 //                PrintTypeHolder obj = ticketGraphics.get(i);
@@ -167,5 +157,32 @@ public class StandartPrintable {
                 Log.e("argox_demo", null, ex);
             }
         }
+
+
+    }
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
+    }
+
+    public static Bitmap rotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        Bitmap bm = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+        source.recycle();
+
+        return bm;
     }
 }

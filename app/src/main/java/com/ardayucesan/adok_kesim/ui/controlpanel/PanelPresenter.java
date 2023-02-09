@@ -516,7 +516,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
             return;
         }
 
-        List<String> params = Arrays.asList("mac", "user_id", "token", "point_id", "production_id", "value", "quality", "faultCode");
+        List<String> params = Arrays.asList("mac", "user_id", "token", "point_id", "production_id", "value", "quality", "faultcode");
         List<String> values = Arrays.asList(Helper.AccesMac(), user.getId(), user.getToken(), user.getPoint_id(), order.getProductionId(), String.valueOf(length), quality, faultCode);
 
         d(TAG, "saveToMemory: memory object : " + Helper.setJsonRequestBody(params, values));

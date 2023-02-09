@@ -67,25 +67,12 @@
             android:id="@+id/btnPrintBarcode"
             android:layout_width="290dp"
             android:layout_height="90dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/btn_hover_memory"
             android:text="Yazdır"
             android:textColor="@color/white"
             android:textSize="36sp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnReportBarcode"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnReportBarcode" />
-
-        <Button
-            android:id="@+id/btnReportBarcode"
-            android:layout_width="290dp"
-            android:layout_height="90dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/btn_hover_stop"
-            android:text="Sorun Bildir"
-            android:textColor="@color/white"
-            android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 

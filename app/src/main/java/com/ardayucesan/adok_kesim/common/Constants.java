@@ -2,8 +2,8 @@ package com.ardayucesan.adok_kesim.common;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://78.186.71.81/deviceapi/screen/";
-    public static final String IMAGE_URL = "http://78.186.71.81/images/generate/";
+    public static final String BASE_URL = "http://192.168.12.69/deviceapi/screen/";
+    public static final String IMAGE_URL = "http://192.168.12.69/images/generate/";
 //    public static final String BASE_URL = "http://10.175.18.154:8081/gezderi-iot/kaplama-debug/";
     //    public static final String BASE_URL = "http://192.168.3.230/gezderi-iot/gofraj/";
     public static final String TYPE_URL = "http://212.175.18.154:8081/gezderi-iot/uretim-debug/";

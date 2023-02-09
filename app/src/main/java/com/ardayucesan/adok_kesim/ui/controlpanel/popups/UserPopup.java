@@ -107,12 +107,10 @@ public class UserPopup {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(new Observer<JsonObject>() {
-
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
                             showProgress();
                         }
-
                         @Override
                         public void onNext(@NonNull JsonObject response) {
                             JsonObject responseData = response.getAsJsonObject();
