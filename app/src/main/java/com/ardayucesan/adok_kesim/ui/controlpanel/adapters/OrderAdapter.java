@@ -156,7 +156,7 @@ public class OrderAdapter extends ArrayAdapter<WorkHolder> {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: selected : " + workOrderList.get(position));
 //                int id = workOrderList.indexOf(filtered_list.get(position));
-                presenter.startWorkOrder(orderList.get(position).getWorkOrderId());
+                presenter.createWorkOrder(orderList.get(position).getProductId());
             }
         });
 

@@ -247,7 +247,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
                             mView.showPreviousTicketsPopup(barcodeList);
                             mView.hideProgress();
                         } else {//v 1.3 te yok yeni eklendi
-                            mView.showErrorToast("Hata",ticketListResponse.get("message").getAsString());
+                            mView.showErrorToast("Hata", ticketListResponse.get("message").getAsString());
                             mView.hideProgress();
                         }
                     }
@@ -461,8 +461,8 @@ public class PanelPresenter implements _PanelContract.Presenter {
             return;
         }
 
-        List<String> params = Arrays.asList("mac", "user_id", "token", "point_id", "production_id", "workorder_id","quality");
-        List<String> values = Arrays.asList(Helper.AccesMac(), user.getId(), user.getToken(), user.getPoint_id(), order.getProductionId(), order.getWorkOrderId(),quality);
+        List<String> params = Arrays.asList("mac", "user_id", "token", "point_id", "production_id", "workorder_id", "quality");
+        List<String> values = Arrays.asList(Helper.AccesMac(), user.getId(), user.getToken(), user.getPoint_id(), order.getProductionId(), order.getWorkOrderId(), quality);
 
         JsonObject responseTest = Helper.setJsonRequestBody(params, values);
         Log.d(TAG, "ticket response fetchTicketData: " + responseTest.toString());
@@ -487,7 +487,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
                             clearQuantity(quality);
                             mView.showBarcodePreviewPopup(ticketResponse.get("data").getAsJsonObject().get("rows").getAsJsonObject().get("barcode").getAsString());
                         } else {
-                            mView.showErrorToast("Hata",ticketResponse.get("message").getAsString());
+                            mView.showErrorToast("Hata", ticketResponse.get("message").getAsString());
                         }
                     }
 
@@ -606,7 +606,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
                     public void onNext(@NonNull JsonObject jsonObject) {
                         if (jsonObject.get("success").getAsBoolean()) {
                             if (status.equals(Constants.STATUS_FAULT_CODE) || status.equals(Constants.STATUS_FORCED_FAULT_CODE) || status.equals(Constants.STATUS_FINISHED_CODE)) {
-                                if(status.equals(Constants.STATUS_FINISHED_CODE)){
+                                if (status.equals(Constants.STATUS_FINISHED_CODE)) {
 //                                    mView.updateViewFinish();
                                     d(TAG, "onNext: here order fnisihed");
                                     clearOrder();
@@ -637,6 +637,80 @@ public class PanelPresenter implements _PanelContract.Presenter {
                     @Override
                     public void onComplete() {
                         mView.hideProgress();
+                    }
+
+                });
+    }
+
+    public void getProductList(String filter) {
+        if (!userController()) {
+            return;
+        }
+
+        List<String> params = asList("mac", "user_id", "token", "point_id", "filter");
+        List<String> values = asList(Helper.AccesMac(), user.getId(), user.getToken(), user.getPoint_id(), (filter.equals("cls")) ? "" : filter);
+
+        d(TAG, "getWorkOrders: body object : " + Helper.setJsonRequestBody(params, values));
+
+        iPanelRepository.getProductList(Helper.setJsonRequestBody(params, values))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<JsonObject>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                        if (filter.length() == 0) {
+                            mView.showProgress();
+                        } else {
+                            mView.showProductProgressBar();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(@NonNull JsonObject productListResponse) {
+                        d(TAG, "onNext: get producs : " + productListResponse.toString());
+                        if (productListResponse.get("success").getAsBoolean()) {
+                            JsonArray productArray = productListResponse.get("data").getAsJsonObject().get("rows").getAsJsonArray();
+                            ArrayList<WorkHolder> productList = new ArrayList<>();
+                            for (JsonElement object : productArray) {
+
+                                WorkHolder holder = new WorkHolder(
+                                        object.getAsJsonObject().get("id").getAsString(),
+                                        object.getAsJsonObject().get("name").getAsString()
+                                );
+
+                                productList.add(holder);
+                                d(TAG, "onResponse: orderList" + productList.get(0).getWorkOrderName());
+                            }
+
+                            if (filter.length() == 0) {
+                                mView.showProductPopup(user, productList);
+                            } else {
+                                mView.updateProductList(productList);
+                            }
+                        } else {
+                            mView.showErrorToast("Hata", productListResponse.get("message").getAsString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mView.showErrorToast("Hata", e.toString());
+                        mView.hideProgress();
+                        Log.d("NETWORK_CALLS_ORDER", "onError: " + e.toString());
+                        if (e instanceof ConnectException) {
+                            mView.showDialogAlert(Constants.CHECK_ETH);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (filter.length() == 0) {
+                            mView.hideProgress();
+
+                        } else {
+                            mView.hideProductProgressBar();
+                        }
                     }
                 });
     }
@@ -677,8 +751,64 @@ public class PanelPresenter implements _PanelContract.Presenter {
                                 d(TAG, "onResponse: orderList" + orderList.get(0).getWorkOrderName());
                             }
 
-                            mView.showOrderPopup(user, orderList);
+                            mView.showProductPopup(user, orderList);
                         } else {
+                            mView.showErrorToast("Hata", orderResponse.get("message").getAsString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mView.showErrorToast("Hata", e.toString());
+                        mView.hideProgress();
+                        Log.d("NETWORK_CALLS_ORDER", "onError: " + e.toString());
+                        if (e instanceof ConnectException) {
+                            mView.showDialogAlert(Constants.CHECK_ETH);
+                        }
+                    }
+                    @Override
+                    public void onComplete() {
+                        mView.hideProgress();
+                    }
+                });
+    }
+    public void createWorkOrder(String product_id){
+        if (!userController()) {
+            return;
+        }
+
+        List<String> params = Arrays.asList("mac", "user_id", "token", "product_id","point_id");
+        List<String> values = Arrays.asList(Helper.AccesMac(), user.getId(), user.getToken(), product_id,user.getPoint_id());
+
+        JsonObject body = Helper.setJsonRequestBody(params,values);
+
+        d(TAG, "createWorkOrder: body : "+body);
+
+        iPanelRepository.newWorkOrder(Helper.setJsonRequestBody(params, values))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<JsonObject>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        mView.showProgress();
+                    }
+                    @Override
+                    public void onNext(@NonNull JsonObject orderResponse) {
+                        d(TAG, "onNext: start order response : " + orderResponse);
+                        JsonObject data = orderResponse.get("data").getAsJsonObject();
+                        if (orderResponse.get("success").getAsBoolean()) {
+                            try {
+                                startWorkOrder(data.get("id").getAsString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+//                                showDialogAlert("Hata Oluştu : " + e.getMessage());
+                                mView.showErrorToast("Hata Oluştu", e.getMessage());
+                            }
+                            mView.hideProgress();
+//                            cutIds1K = Arrays.asList(data.get("K"))
+
+                        } else {
+                            mView.hideProgress();
                             mView.showErrorToast("Hata", orderResponse.get("message").getAsString());
                         }
                     }
@@ -820,6 +950,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
     public void setUser(Operator user) {
         this.user = user;
         mView.setUserName(user.getName());
+        mView.setButtonStateLogout();
         mView.setMachineName(user.getPoint_name());
     }
 
@@ -829,7 +960,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
         this.order = order;
 //        Log.d(TAG, "setOrder: " + Float.valueOf(removeLastCharOptional(order.getCutQuantity())));
         mView.setWorkOrderStatus(Constants.STATUS_ACTIVE_TEXT);
-        mView.updateViews(order.getProductName(), order.getCustomerName(), order.getDeadline(), order.getOrderNumber(), order.getWorkorderQty(), order.getTotalCutValue(), order.getDescription(), String.format("%.2f", order.getQuantity1K() / 100) + " m", String.format("%.2f", order.getQuantity2K() / 100)+" m",order.getWorkorderCode() );
+        mView.updateViews(order.getProductName(), order.getCustomerName(), order.getDeadline(), order.getOrderNumber(), order.getWorkorderQty(), order.getTotalCutValue(), order.getDescription(), String.format("%.2f", order.getQuantity1K() / 100) + " m", String.format("%.2f", order.getQuantity2K() / 100) + " m", order.getWorkorderCode());
         mView.changeOrderButtonText(true);
     }
 
@@ -838,7 +969,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
         // deprecated
     }
 
-    public void openPreviewPopupPrevious(String barcode){
+    public void openPreviewPopupPrevious(String barcode) {
         mView.showBarcodePreviewPopup(barcode);
     }
 
@@ -852,7 +983,13 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
     @Override
     public void startUserPopup() {
-        userPopup.showPopUp();
+        if(this.user == null){
+            userPopup.showPopUp();
+        }else{
+            this.user = null;
+            mView.setButtonStateLogin();
+            mView.setUserName("");
+        }
     }
 
     @Override
@@ -883,15 +1020,15 @@ public class PanelPresenter implements _PanelContract.Presenter {
     }
 
     public void finishWorkOrder() {
-        if(length > 5){
-            mView.showErrorToast("Hata","Metraj hafızaya alınmadan çıkış yapılamaz.");
+        if (length > 5) {
+            mView.showErrorToast("Hata", "Metraj hafızaya alınmadan çıkış yapılamaz.");
             return;
         }
-        if(order.getQuantity1K() != 0 || order.getQuantity2K() != 0){
-            mView.showErrorToast("Hata","Hafızadaki metrajlar yazdırılmadan çıkış yapılamaz");
+        if (order.getQuantity1K() != 0 || order.getQuantity2K() != 0) {
+            mView.showErrorToast("Hata", "Hafızadaki metrajlar yazdırılmadan çıkış yapılamaz");
             return;
         }
-        postProductionStatus("0","","3");
+        postProductionStatus("0", "", "3");
 //        postQuitData();
     }
 
@@ -903,13 +1040,13 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
     @Override
     public void clearQuantity(String quality) {
-        if(quality.equals("1K")){
+        if (quality.equals("1K")) {
             order.setQuantity1K(0);
             mView.update1K(order.getQuantity1K());
-        } else if(quality.equals("2K")){
+        } else if (quality.equals("2K")) {
             order.setQuantity2K(0);
             mView.update2K(order.getQuantity2K());
-        }else{
+        } else {
             //boş
         }
     }
@@ -1001,14 +1138,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
             command = response.substring(2);
 
             if (length == 0) {
-//                if (!chronometer.isRunning) {
-//
-//                    chronometer.setMsElapsed(0);
-//                    chronometer.start();
-//                    Log.d(TAG, "getLengthFromJNI: is chronometer started :" + chronometer.isRunning + " elapsed : " + chronometer.msElapsed);
-//                }
             }
-
             switch (command) {
                 case "1":
                     length += 0.0625;

@@ -5,6 +5,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +82,8 @@ public class UserPopup {
 
         init();
 
+//        onCardRead();
+
         etCardId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +117,7 @@ public class UserPopup {
                         @Override
                         public void onNext(@NonNull JsonObject response) {
                             JsonObject responseData = response.getAsJsonObject();
-
+                            Log.d(TAG, "onNext: response login : " + response);
                             if (responseData.get("success").getAsBoolean()) {
 //                            mView.clearErrorText();
 
@@ -217,8 +220,6 @@ public class UserPopup {
     public void showDefaultLoginText() {
         tvLogin.setText(context.getResources().getText(R.string.giri_yapmak_in_kart_okutunuz));
     }
-
-
     public void onCardRead() {
         fetchUser(etCardId.getText().toString());
         etCardId.setText("");

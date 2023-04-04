@@ -106,9 +106,6 @@ public class StandartPrintable {
 
             printer.getEmulation().getGraphicsUtil().storeGraphic(imageScaled, "graphic");
             printer.getEmulation().getGraphicsUtil().printStoreGraphic(5, 5, "graphic");
-//            imageScaled.recycle();
-
-
 //            for (int i = 0; i < ticketGraphics.size(); i++) {
 //                PrintTypeHolder obj = ticketGraphics.get(i);
 //                if (obj.type.equals("text")) {

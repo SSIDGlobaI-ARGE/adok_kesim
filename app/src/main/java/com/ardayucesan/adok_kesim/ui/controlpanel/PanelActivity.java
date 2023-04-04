@@ -53,14 +53,10 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     ConstraintLayout header;
     //order data views
     TextView tvProductName;
-    TextView tvCustomerName;
     TextView tvWorkOrderNo;
-    TextView tvOrderNumber;
     TextView tv1K;
     TextView tv2K;
-    TextView tvWorkOrderQuantity;
     TextView tvCutQuantity;
-    TextView tvDeadline;
     View divider;
     //sensor data views
     TextView tvEncoder;
@@ -76,12 +72,11 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     Button btnSaveMemory;
     Button btnStart;
     Button btnWorkOrder;
-
     Button btnPrintMemory;
     ImageView imgButtonMenu;
+    ImageView userButton;
     //progress indicator
     ProgressBar progressBar;
-    //fault adapters -> for FaultsListView
     FaultAdapter faultsAdapter;
     //Ticket adapter -> for Ticket List Views
     TicketAdapter ticketAdapter;
@@ -92,9 +87,7 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     PopupQuality popupQuality;
     PopupPrintPreview popupPrintPreview;
     PopupFault popupFault;
-
     PopupPrint popupPrint;
-
     PopupPrevBarcode popupPrevBarcode;
     //custom AlertDialog class
     StandartDialog standartDialog;
@@ -157,12 +150,8 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
         //order views
         tvWorkOrderNo = findViewById(R.id.tvWorkOrderCode);
         tvProductName = findViewById(R.id.tv_urun_adi);
-        tvCustomerName = findViewById(R.id.tv_musteri_adi);
-        tvDeadline = findViewById(R.id.tv_son_tarih);
-        tvOrderNumber = findViewById(R.id.tv_siparis_no);
         tv1K = findViewById(R.id.tv_1k);
         tv2K = findViewById(R.id.tv_2k);
-        tvWorkOrderQuantity = findViewById(R.id.tv_is_emri_miktari);
         tvCutQuantity = findViewById(R.id.tv_kesim_miktari);
         //machine views
         tvMachineName = findViewById(R.id.tvMachine);
@@ -180,6 +169,7 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
         btnStart = findViewById(R.id.btn_calistir);
         btnWorkOrder = findViewById(R.id.btn_is_emri);
         imgButtonMenu = findViewById(R.id.imgMenu);
+        userButton = findViewById(R.id.imgButton);
         divider = findViewById(R.id.divDescription);
         //progress indicator
         progressBar = findViewById(R.id.panelProgressBar);
@@ -281,7 +271,8 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
 
     @Override
     public void onWorkOrderStartClick() {
-        panelPresenter.getWorkOrders();
+//        panelPresenter.getWorkOrders();
+        panelPresenter.getProductList("");
     }
 
     @Override
@@ -289,10 +280,11 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
         popupPrint.showPopUp();
     }
 
+    boolean isWorkOrderStarted = false;
     @Override
     public void onWorkOrderClick() {
 
-        if (btnWorkOrder.getText().equals(getString(R.string.emri_ba_lat))) {
+        if (!isWorkOrderStarted){
             onWorkOrderStartClick();
         } else {
             onWorkOrderFinishClick();
@@ -352,8 +344,23 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     }
 
     @Override
-    public void showOrderPopup(Operator user, ArrayList<WorkHolder> orderList) {
+    public void showProductPopup(Operator user, ArrayList<WorkHolder> orderList) {
         orderPopup.showPopUp(user, orderList);
+    }
+
+    @Override
+    public void showProductProgressBar() {
+        orderPopup.showProductProgressBar();
+    }
+
+    @Override
+    public void hideProductProgressBar() {
+        orderPopup.hideProductProgressBar();
+    }
+
+    @Override
+    public void updateProductList(ArrayList<WorkHolder> filteredList){
+        orderPopup.updateList(filteredList);
     }
 
     @Override
@@ -404,6 +411,19 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     @Override
     public void hidePreviousBarcodePopup() {
 
+    }
+
+    @Override
+    public void setButtonStateLogin() {
+//        btn2
+        btnFinish.setBackground(getDrawable(R.drawable.btn_hover_memory));
+        userButton.setBackground(getDrawable(R.drawable.change_user_dark));
+    }
+
+    @Override
+    public void setButtonStateLogout() {
+        btnFinish.setBackground(getDrawable(R.drawable.btn_hover_stop));
+        userButton.setBackground(getDrawable(R.drawable.user_logout));
     }
 
     @Override
@@ -468,9 +488,11 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     @Override
     public void changeOrderButtonText(Boolean hasOrder) {
         if (hasOrder) {
-            btnWorkOrder.setText(R.string.emri_bitir);
+            btnWorkOrder.setText("İş Emri Bitir");
+            isWorkOrderStarted = true;
         } else {
-            btnWorkOrder.setText(R.string.emri_ba_lat);
+            btnWorkOrder.setText("Desen Seç");
+            isWorkOrderStarted = false;
         }
     }
 
@@ -484,10 +506,6 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     public void clearOrderViews() {
         tvWorkOrderNo.setText("-");
         tvProductName.setText("-");
-        tvCustomerName.setText("-");
-        tvDeadline.setText("-");
-        tvOrderNumber.setText("-");
-        tvWorkOrderQuantity.setText("-");
         tvCutQuantity.setText("-");
         tv1K.setText("-");
         tv2K.setText("-");
@@ -526,12 +544,8 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     public void updateViews(String productName, String customerName, String deadline, String orderNumber, String workOrderQTY, String totalCutQTY, String description, String kQuantity, String kkQuantity,String workOrderCode) {
         tvWorkOrderNo.setText(workOrderCode);
         tvProductName.setText(productName);
-        tvCustomerName.setText(customerName);
-        tvDeadline.setText(deadline);
-        tvOrderNumber.setText(orderNumber);
         tv1K.setText(kQuantity);
         tv2K.setText(kkQuantity);
-        tvWorkOrderQuantity.setText(workOrderQTY);
         tvCutQuantity.setText(totalCutQTY);
     }
 

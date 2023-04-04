@@ -13,16 +13,18 @@
         android:focusableInTouchMode="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:context=".ui.workorder.OrderActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:clickable="false"
             android:background="@drawable/btn_hover_orange"
+            android:clickable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -78,35 +80,72 @@
             android:id="@+id/progressBarOrder"
             style="?android:attr/progressBarStyle"
             android:layout_width="100dp"
-            android:elevation="20dp"
             android:layout_height="100dp"
-            android:layout_marginStart="468dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:elevation="20dp"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
+        <EditText
+            android:id="@+id/searchViewProduct"
+            android:layout_width="507dp"
+            android:layout_height="66dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/custom_popup"
+            android:paddingStart="10dp"
+            android:inputType="text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="256dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/btn_hover_orange"
+            android:text="Filtrele"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="@+id/searchViewProduct"
+            app:layout_constraintStart_toEndOf="@+id/searchViewProduct"
+            app:layout_constraintTop_toTopOf="@+id/searchViewProduct" />
+
+        <ImageView
+            android:id="@+id/imgBtnClearFilter"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="132dp"
+            android:background="@drawable/btn_hover_orange"
+            app:layout_constraintBottom_toBottomOf="@+id/btnFilter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnFilter"
+            app:layout_constraintVertical_bias="0.138"
+            app:srcCompat="@drawable/delete_filter" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout3"
             android:layout_width="1180dp"
-            android:layout_height="580dp"
+            android:layout_height="520dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/custom_popup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+            app:layout_constraintTop_toBottomOf="@+id/searchViewProduct">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvOrder"
                 android:layout_width="match_parent"
-                android:padding="5dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                android:padding="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

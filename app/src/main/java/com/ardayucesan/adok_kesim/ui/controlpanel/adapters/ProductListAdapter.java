@@ -2,60 +2,69 @@ package com.ardayucesan.adok_kesim.ui.controlpanel.adapters;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ardayucesan.adok_kesim.R;
-import com.ardayucesan.adok_kesim.data.network.model.workorder.WorkHolder;
+import com.ardayucesan.adok_kesim.data.network.model.fault.Fault;
 import com.ardayucesan.adok_kesim.ui.controlpanel.PanelPresenter;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
-public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.ViewHolder> {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> {
 
     private final static String TAG = "__CutterAdapter";
-    ArrayList<WorkHolder> productList;
+    ArrayList<Fault> productList;
     Context context;
     private LayoutInflater mInflater;
     PanelPresenter presenter;
+    String type;
 
-    public OrderListAdapter(@NonNull Context context, PanelPresenter presenter, ArrayList<WorkHolder> productList) {
+    public ProductListAdapter(@NonNull Context context, PanelPresenter presenter, ArrayList<Fault> productList, String type) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.presenter = presenter;
         this.productList = productList;
+        this.type = type;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.order_item, parent, false);
+        View view = mInflater.inflate(R.layout.fault_stop_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String orderName = productList.get(holder.getAdapterPosition()).getWorkOrderName();
+        String faultName = productList.get(holder.getAdapterPosition()).getFaultDesc();
 
-
-        holder.tvOrderCode.setText(orderName);
+        holder.tvProductName.setText(faultName);
 
         holder.btnSelect.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.createWorkOrder(productList.get(holder.getAdapterPosition()).getProductId());
+//                presenter.startWorkOrder(orderList.get(holder.getAdapterPosition()).getWorkOrderId());
+                if (type.equals("stop")) {
+                    presenter.postProductionStatus(productList.get(holder.getAdapterPosition()).getFaultId(), productList.get(holder.getAdapterPosition()).getFaultDesc(), "6");
+                    Log.d(TAG, "onClick: clicked item : " + productList.get(holder.getAdapterPosition()).getFaultDesc());
+                }
+                if(type.equals("fault")){
+                    presenter.saveToMemory("2K", productList.get(holder.getAdapterPosition()).getFaultId());
+                    Log.d(TAG, "onClick: clicked item : " + productList.get(holder.getAdapterPosition()).getFaultDesc());
+                }
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -64,21 +73,17 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderCode;
+        TextView tvProductName;
         TextView btnSelect;
-        TextView tvShipmentProduct;
-        TextView tvShipmentSize;
-        TextView tvProductionOrderItem;
-        ImageView btnOrderItemInfo;
-        ConstraintLayout constraintLayoutHeader;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvOrderCode = itemView.findViewById(R.id.tvOrderCode);
+            tvProductName = itemView.findViewById(R.id.tvOrderCode);
             btnSelect = itemView.findViewById(R.id.btnOrderSelect);
         }
     }
-    public void filterList(ArrayList<WorkHolder> filterlist) {
+
+    public void filterList(ArrayList<Fault> filterlist) {
         // below line is to add our filtered
         // list in our course array list.
         productList = filterlist;
@@ -86,6 +91,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
         // as change in recycler view data.
         notifyDataSetChanged();
     }
+
 
 //    Shipment getItem(int id) {
 //        return shipmentList.get(id);

@@ -112,7 +112,7 @@ public class PopupPrintPreview {
 //                                    printer.getEmulation().getGraphicsUtil().printStoreGraphic(100, 20, "graphic");
                                 Log.d("PRİNTER", "onResourceReady: after ");
                                 standartPrintable.printBarcodeLabel(resource, panelPresenter);
-
+                                hidePopup();
                             }
 
                             @Override

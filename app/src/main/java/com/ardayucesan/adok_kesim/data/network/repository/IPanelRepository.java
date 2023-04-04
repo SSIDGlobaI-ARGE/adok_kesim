@@ -38,8 +38,13 @@ public interface IPanelRepository {
     @POST("getworkorders")
     Observable<JsonObject> getWorkOrderId(@Body JsonObject body);
 
+    @POST("getproductlist")
+    Observable<JsonObject> getProductList(@Body JsonObject body);
+
     @POST("startworkorder")
     Observable<JsonObject> startWorkOrder(@Body JsonObject body);
 
+    @POST("newworkorder")
+    Observable<JsonObject> newWorkOrder(@Body JsonObject body);
 
 }

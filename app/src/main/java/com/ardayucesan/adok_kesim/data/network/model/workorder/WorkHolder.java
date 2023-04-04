@@ -14,7 +14,7 @@ public class WorkHolder {
 //        this.visiblity = visiblity;
     }
 
-    public String getWorkOrderId() {
+    public String getProductId() {
         return workOrderId;
     }
 

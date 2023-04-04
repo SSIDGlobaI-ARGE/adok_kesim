@@ -47,56 +47,6 @@
         app:layout_constraintTop_toTopOf="@+id/textView10" />
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/opensans_bold"
-        android:text="Müşteri Adı  :"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-    <TextView
-        android:id="@+id/tv_musteri_adi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/opensans_regular"
-        android:text="-"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
-
-    <TextView
-        android:id="@+id/tv_siparis_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/opensans_regular"
-        android:text="-"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView7"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toTopOf="@+id/textView7" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/opensans_bold"
-        android:text="Sipariş No :"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toTopOf="@+id/textView8" />
-
-    <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -123,33 +73,6 @@
         app:layout_constraintTop_toBottomOf="@+id/navbar" />
 
     <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="804dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/opensans_bold"
-        android:text="İş Emri Miktarı :"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-    <TextView
-        android:id="@+id/tv_is_emri_miktari"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/opensans_regular"
-        android:text="-"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView13"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toTopOf="@+id/textView13"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
         android:id="@+id/tv_kesim_miktari"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -164,18 +87,19 @@
         app:layout_constraintTop_toTopOf="@+id/tv4"
         app:layout_constraintVertical_bias="0.0" />
 
+
     <TextView
         android:id="@+id/tv4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="28dp"
         android:fontFamily="@font/opensans_bold"
         android:text="Üretim Miktarı :"
         android:textColor="@color/black"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navbar"
@@ -275,11 +199,11 @@
             android:layout_height="64dp"
             android:clickable="false"
             android:elevation="20dp"
+            android:background="@drawable/change_user_dark"
             app:layout_constraintBottom_toBottomOf="@+id/btn_bitir"
             app:layout_constraintEnd_toEndOf="@+id/btn_bitir"
             app:layout_constraintStart_toStartOf="@+id/btn_bitir"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/change_user_dark" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 <!--        <Button-->
 <!--            android:id="@+id/btn_eski_etiket"-->
@@ -345,7 +269,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/btn_hover_memory"
             android:fontFamily="@font/opensans_bold"
-            android:text="HAFIZAYA AL"
+            android:text="KAYDET"
             android:textColor="@color/white"
             android:textSize="36sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -373,7 +297,7 @@
             android:layout_marginEnd="60dp"
             android:background="@drawable/btn_hover_prevticket"
             android:fontFamily="@font/opensans_bold"
-            android:text="@string/emri_ba_lat"
+            android:text="DESEN SEÇ"
             android:textColor="@color/white"
             android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -404,36 +328,21 @@
 
     <TextView
         android:id="@+id/tv_encoder"
-        android:layout_width="320dp"
-        android:layout_height="100dp"
+        android:layout_width="336dp"
+        android:layout_height="131dp"
         android:layout_marginStart="48dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="48dp"
         android:fontFamily="@font/opensans_bold"
         android:gravity="center"
         android:inputType="numberDecimal"
         android:text="0 m"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="75sp"
+        android:textSize="80sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/opensans_bold"
-        android:gravity="center"
-        android:text="Son Tarih      :"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-<!--    <TextView-->
+    <!--    <TextView-->
 <!--        android:id="@+id/textView8"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
@@ -461,20 +370,6 @@
 <!--        app:layout_constraintBottom_toBottomOf="@+id/textView8"-->
 <!--        app:layout_constraintStart_toEndOf="@+id/textView8"-->
 <!--        app:layout_constraintTop_toTopOf="@+id/textView8" />-->
-
-    <TextView
-        android:id="@+id/tv_son_tarih"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/opensans_regular"
-        android:text="-"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/textView5" />
 
     <ProgressBar
         android:id="@+id/panelProgressBar"
@@ -504,7 +399,7 @@
         android:id="@+id/tv5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="64dp"
         android:fontFamily="@font/opensans_bold"
         android:text="2K Miktar:"
         android:textColor="@color/black"
@@ -557,12 +452,12 @@
         android:id="@+id/divider2"
         android:layout_width="1100dp"
         android:layout_height="1dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp"
         android:background="@color/black"
         android:backgroundTint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/tv_encoder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv4" />
 
     <TextView
         android:id="@+id/tvWorkOrderCode"

@@ -4,19 +4,24 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ardayucesan.adok_kesim.R;
+import com.ardayucesan.adok_kesim.data.network.model.fault.Fault;
 import com.ardayucesan.adok_kesim.data.network.model.user.Operator;
 import com.ardayucesan.adok_kesim.data.network.model.workorder.WorkHolder;
 import com.ardayucesan.adok_kesim.data.network.repository.IPanelRepository;
@@ -25,18 +30,19 @@ import com.ardayucesan.adok_kesim.ui.controlpanel.PanelPresenter;
 import com.ardayucesan.adok_kesim.ui.controlpanel.adapters.OrderListAdapter;
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class OrderPopupNew {
 
     private static final int width = 1200;
     private static final int height = 700;
-    private static final String TAG = "__OrderPopup" ;
+    private static final String TAG = "__OrderPopup";
     //components
     private PopupWindow popupWindowOrder;
     private View popupViewOrder;
     private RecyclerView rvOrder;
-//    private SearchView searchView;
+    //    private SearchView searchView;
     private ProgressBar pbar;
     private ImageView btnQuitOrder;
 
@@ -45,17 +51,18 @@ public class OrderPopupNew {
     private IPanelRepository panelRepository;
 
     private Operator user;
-    private ArrayList<WorkHolder> orderList = new ArrayList<>();
-    private OrderListAdapter orderAdapter;
+    private ArrayList<WorkHolder> productList = new ArrayList<>();
+    private OrderListAdapter productListAdapter;
+    private EditText etProduct;
 
     public OrderPopupNew(Context context, PanelPresenter presenter) {
         this.context = context;
         this.presenter = presenter;
     }
 
-    public void showPopUp(Operator user,ArrayList<WorkHolder> orderList) {
+    public void showPopUp(Operator user, ArrayList<WorkHolder> productList) {
         this.user = user;
-        this.orderList = orderList;
+        this.productList = productList;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         popupViewOrder = inflater.inflate(R.layout.popup_order, null);
@@ -63,11 +70,14 @@ public class OrderPopupNew {
         rvOrder = popupViewOrder.findViewById(R.id.rvOrder);
         pbar = popupViewOrder.findViewById(R.id.progressBarOrder);
         btnQuitOrder = popupViewOrder.findViewById(R.id.btnQuitOrder);
+        etProduct = popupViewOrder.findViewById(R.id.searchViewProduct);
+        Button btnFilter = popupViewOrder.findViewById(R.id.btnFilter);
+        ImageView imgBtnClearFilter = popupViewOrder.findViewById(R.id.imgBtnClearFilter);
 
         rvOrder.setLayoutManager(new LinearLayoutManager(getActivity()));
-        orderAdapter = new OrderListAdapter(context,presenter,orderList);
-        rvOrder.setItemViewCacheSize(orderList.size());
-        rvOrder.setAdapter(orderAdapter);
+        productListAdapter = new OrderListAdapter(context, presenter, productList);
+        rvOrder.setItemViewCacheSize(productList.size());
+        rvOrder.setAdapter(productListAdapter);
         if (rvOrder.getItemDecorationCount() > 0) {
             rvOrder.removeItemDecorationAt(0);
         }
@@ -82,6 +92,24 @@ public class OrderPopupNew {
         popupWindowOrder.showAtLocation(((Activity) context).getWindow().getDecorView(), Gravity.CENTER, 0, 0);
 
         btnQuitOrder.setOnClickListener(view -> hidePopup());
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (etProduct.getText().length() >= 1) {
+                    presenter.getProductList(etProduct.getText().toString());
+                    hideKeyboard();
+                }
+            }
+        });
+        imgBtnClearFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etProduct.setText("");
+                presenter.getProductList("cls");
+                hideKeyboard();
+            }
+        });
 
     }
 
@@ -107,6 +135,43 @@ public class OrderPopupNew {
         }
 
     };
+
+    public void updateList(ArrayList<WorkHolder> filteredList) {
+        productListAdapter.filterList(filteredList);
+    }
+
+
+    private void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<WorkHolder> filteredlist = new ArrayList<WorkHolder>();
+
+        // running a for loop to compare elements.
+        for (WorkHolder item : productList) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getWorkOrderName().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+//            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            productListAdapter.filterList(filteredlist);
+        }
+    }
+
+    public void showProductProgressBar(){
+        pbar.setVisibility(View.VISIBLE);
+    }
+    public void hideProductProgressBar(){
+        pbar.setVisibility(View.GONE);
+    }
+
 
 //    public void initSearchView() {
 //

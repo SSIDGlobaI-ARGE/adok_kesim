@@ -80,7 +80,12 @@ public interface _PanelContract {
         void showErrorToast(String header, String description);
         void showSuccessToast(String header, String description);
 
-        void showOrderPopup(Operator user , ArrayList<WorkHolder> orderList);
+        void showProductPopup(Operator user , ArrayList<WorkHolder> orderList);
+
+        void showProductProgressBar();
+        void hideProductProgressBar();
+
+        void updateProductList(ArrayList<WorkHolder> filteredList);
 
         void showBarcodePreviewPopup(String barcode);
 
@@ -101,6 +106,9 @@ public interface _PanelContract {
         void hidePopupPrint();
 
         void hidePreviousBarcodePopup();
+
+        void setButtonStateLogin();
+        void setButtonStateLogout();
     }
 
     interface Presenter {

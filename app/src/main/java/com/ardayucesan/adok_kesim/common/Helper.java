@@ -12,31 +12,33 @@ import java.util.List;
 public class Helper {
 
     public static String AccesMac() {
-        try {
-            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
-            for (NetworkInterface nif : all) {
-                if (!nif.getName().equalsIgnoreCase("eth0")) continue;
 
-                byte[] macBytes = nif.getHardwareAddress();
-                if (macBytes == null) {
-                    return "";
-                }
-
-                StringBuilder res1 = new StringBuilder();
-                for (byte b : macBytes) {
-                    // res1.append(Integer.toHexString(b & 0xFF) + ":");
-                    res1.append(String.format("%02X:", b));
-                }
-
-                if (res1.length() > 0) {
-                    res1.deleteCharAt(res1.length() - 1);
-                }
-                return res1.toString();
-            }
-        } catch (Exception ex) {
-            //handle exception
-        }
-        return "";
+        return "00:16:00:01:03:58";
+//        try {
+//            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+//            for (NetworkInterface nif : all) {
+//                if (!nif.getName().equalsIgnoreCase("eth0")) continue;
+//
+//                byte[] macBytes = nif.getHardwareAddress();
+//                if (macBytes == null) {
+//                    return "";
+//                }
+//
+//                StringBuilder res1 = new StringBuilder();
+//                for (byte b : macBytes) {
+//                    // res1.append(Integer.toHexString(b & 0xFF) + ":");
+//                    res1.append(String.format("%02X:", b));
+//                }
+//
+//                if (res1.length() > 0) {
+//                    res1.deleteCharAt(res1.length() - 1);
+//                }
+//                return res1.toString();
+//            }
+//        } catch (Exception ex) {
+//            //handle exception
+//        }
+//        return "";
     }
 
     public static byte[] getHash(String credentials) {
