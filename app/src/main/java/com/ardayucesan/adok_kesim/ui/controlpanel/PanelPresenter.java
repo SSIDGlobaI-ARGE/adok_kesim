@@ -188,11 +188,11 @@ public class PanelPresenter implements _PanelContract.Presenter {
                 });
     }
 
-
     @Override
     public void simpleDeleteQuantitynTotalLength() {
         totalLength -= length;
         length = 0;
+        //TODO chronometer class incele
         chronometer.setMsElapsed(0);
         Log.d(TAG, "simpleDeleteQuantity: chronometer started elaptes time : " + chronometer.msElapsed);
     }
@@ -582,6 +582,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
         if (userController() == false) {
             return;
         }
+
         if (orderController() == false) {
             return;
         }
@@ -736,7 +737,6 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
                     @Override
                     public void onNext(@NonNull JsonObject orderResponse) {
-                        d(TAG, "onNext: get producs : " + orderResponse.toString());
                         if (orderResponse.get("success").getAsBoolean()) {
                             JsonArray orderArray = orderResponse.get("data").getAsJsonArray();
                             ArrayList<WorkHolder> orderList = new ArrayList<>();
@@ -761,28 +761,29 @@ public class PanelPresenter implements _PanelContract.Presenter {
                     public void onError(@NonNull Throwable e) {
                         mView.showErrorToast("Hata", e.toString());
                         mView.hideProgress();
-                        Log.d("NETWORK_CALLS_ORDER", "onError: " + e.toString());
                         if (e instanceof ConnectException) {
                             mView.showDialogAlert(Constants.CHECK_ETH);
                         }
                     }
+
                     @Override
                     public void onComplete() {
                         mView.hideProgress();
                     }
                 });
     }
-    public void createWorkOrder(String product_id){
+
+    public void createWorkOrder(String product_id) {
         if (!userController()) {
             return;
         }
 
-        List<String> params = Arrays.asList("mac", "user_id", "token", "product_id","point_id");
-        List<String> values = Arrays.asList(Helper.AccesMac(), user.getId(), user.getToken(), product_id,user.getPoint_id());
+        List<String> params = Arrays.asList("mac", "user_id", "token", "product_id", "point_id");
+        List<String> values = Arrays.asList(Helper.AccesMac(), user.getId(), user.getToken(), product_id, user.getPoint_id());
 
-        JsonObject body = Helper.setJsonRequestBody(params,values);
+        JsonObject body = Helper.setJsonRequestBody(params, values);
 
-        d(TAG, "createWorkOrder: body : "+body);
+        d(TAG, "createWorkOrder: body : " + body);
 
         iPanelRepository.newWorkOrder(Helper.setJsonRequestBody(params, values))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -792,6 +793,7 @@ public class PanelPresenter implements _PanelContract.Presenter {
                     public void onSubscribe(@NonNull Disposable d) {
                         mView.showProgress();
                     }
+
                     @Override
                     public void onNext(@NonNull JsonObject orderResponse) {
                         d(TAG, "onNext: start order response : " + orderResponse);
@@ -891,7 +893,6 @@ public class PanelPresenter implements _PanelContract.Presenter {
                     public void onError(@NonNull Throwable e) {
                         mView.showErrorToast("Hata", e.toString());
                         mView.hideProgress();
-                        Log.d("NETWORK_CALLS_ORDER", "onError: " + e.toString());
                         if (e instanceof ConnectException) {
                             mView.showDialogAlert(Constants.CHECK_ETH);
                         }
@@ -983,12 +984,16 @@ public class PanelPresenter implements _PanelContract.Presenter {
 
     @Override
     public void startUserPopup() {
-        if(this.user == null){
+        if (this.user == null) {
             userPopup.showPopUp();
-        }else{
-            this.user = null;
-            mView.setButtonStateLogin();
-            mView.setUserName("");
+        } else {
+            if (order == null) {
+                this.user = null;
+                mView.setButtonStateLogin();
+                mView.setUserName("");
+            }else{
+                mView.showErrorToast("Hata","İş Emri Bitirmeden Kullanıcı Çıkışı Yapılamaz.");
+            }
         }
     }
 
@@ -1078,7 +1083,6 @@ public class PanelPresenter implements _PanelContract.Presenter {
 //                .subscribeOn(AndroidSchedulers.mainThread())
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(aLong -> mView.updateTotalQuantity(totalLength)));
-        Log.d(TAG, "startEncoder: here aq");
 
 //        Observable.interval(10, TimeUnit.SECONDS)
 //                .subscribeOn(AndroidSchedulers.mainThread())
@@ -1087,13 +1091,11 @@ public class PanelPresenter implements _PanelContract.Presenter {
 //                    @Override
 //                    public void onSubscribe(Disposable d) {
 //                        compositeDisposable.add(d);
-//                        Log.d(TAG, "startEncoder: here subs aq");
 //
 //                    }
 //
 //                    @Override
 //                    public void onNext(Long aLong) {
-//                        Log.d(TAG, "startEncoder: here next aq");
 //
 //                        Date currentTime = Calendar.getInstance().getTime();
 //                        String a = formatter.format(currentTime);

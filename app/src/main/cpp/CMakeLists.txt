@@ -10,6 +10,7 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project("adok_kesim")
 
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.

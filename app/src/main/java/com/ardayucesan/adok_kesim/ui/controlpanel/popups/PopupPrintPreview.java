@@ -42,6 +42,7 @@ public class PopupPrintPreview {
     final Context context;
     private PopupWindow popupWindow;
 
+
     public PopupPrintPreview(Context context, PanelPresenter panelPresenter) {
         this.context = context;
         this.panelPresenter = panelPresenter;
@@ -103,14 +104,14 @@ public class PopupPrintPreview {
                 Glide.with(context)
                         .asBitmap()
                         .load(url)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .into(new CustomTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
 //                            imageView.setImageBitmap(resource);
-                                Log.d("PRİNTER", "onResourceReady: here before");
 //                                    printer.getEmulation().getGraphicsUtil().storeGraphic(resource, "graphic");
 //                                    printer.getEmulation().getGraphicsUtil().printStoreGraphic(100, 20, "graphic");
-                                Log.d("PRİNTER", "onResourceReady: after ");
                                 standartPrintable.printBarcodeLabel(resource, panelPresenter);
                                 hidePopup();
                             }

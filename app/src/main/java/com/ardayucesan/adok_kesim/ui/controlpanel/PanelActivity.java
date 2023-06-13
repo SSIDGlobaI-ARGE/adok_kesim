@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.ardayucesan.adok_kesim.BuildConfig;
 import com.ardayucesan.adok_kesim.R;
 import com.ardayucesan.adok_kesim.common.Constants;
 import com.ardayucesan.adok_kesim.data.network.model.BarcodeHolder;
@@ -42,6 +43,8 @@ import com.ardayucesan.adok_kesim.ui.controlpanel.popups.PopupPrintPreview;
 import com.ardayucesan.adok_kesim.ui.controlpanel.popups.PopupQuality;
 import com.ardayucesan.adok_kesim.ui.controlpanel.popups.PopupStop;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +67,7 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     TextView tvMachineName;
     TextView tvMachineStatus;
     TextView tvUserName;
+    TextView tvDebugMode;
     //buttons
     Button btnDelete;
 //    Button btnPreviousTicket;
@@ -94,7 +98,9 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
     ProgressDialog progressDialog;
 
     NotificationManagerCompat notificationManager;
+
     NotificationCompat.Builder builder;
+
     Integer notificationID = 100;
     private final String CHANNEL_ID = "1";
     @Override
@@ -157,6 +163,7 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
         tvMachineName = findViewById(R.id.tvMachine);
         tvMachineStatus = findViewById(R.id.tv_status);
         tvUserName = findViewById(R.id.tv_user_name);
+        tvDebugMode = findViewById(R.id.tv_debug_mode);
         //sensor views
         tvEncoder = findViewById(R.id.tv_encoder);
         //buttons
@@ -175,6 +182,10 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
         progressBar = findViewById(R.id.panelProgressBar);
         //activity header
         header = findViewById(R.id.navbar);
+
+        if(BuildConfig.BUILD_TYPE.equals("debug") || BuildConfig.BUILD_TYPE.equals("office")){
+            tvDebugMode.setVisibility(View.VISIBLE);
+        }
 
         tvEncoder.setClickable(false);
 
@@ -214,7 +225,12 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
 
     @Override
     public void updateQuantity(float length) {
-        tvEncoder.setText(String.format("%.2f", length / 100) + " m");
+        BigDecimal decimal = new BigDecimal(length / 100);
+//        decimal =  decimal.divide(new BigDecimal(100));
+        decimal = decimal.setScale(2, RoundingMode.DOWN);
+//        tvEncoder.setText(String.format("%.2f",  length /100 ) + " m");
+//        Log.d(TAG, "updateQuantity: length : " + length /100 + " m");
+        tvEncoder.setText(decimal + " m");
     }
 
     @Override
@@ -370,12 +386,18 @@ public class PanelActivity extends AppCompatActivity implements _PanelContract.V
 
     @Override
     public void update1K(float value) {
-        tv1K.setText(String.format("%.2f", value / 100) + " m");
+        BigDecimal decimal = new BigDecimal(value / 100);
+//        decimal =  decimal.divide(new BigDecimal(100));
+        decimal = decimal.setScale(2, RoundingMode.DOWN);
+        tv1K.setText(decimal + " m");
     }
 
     @Override
     public void update2K(float value) {
-        tv2K.setText(String.format("%.2f", value / 100) + " m");
+        BigDecimal decimal = new BigDecimal(value / 100);
+//        decimal =  decimal.divide(new BigDecimal(100));
+        decimal = decimal.setScale(2, RoundingMode.DOWN);
+        tv2K.setText(decimal + " m");
     }
 
     @Override

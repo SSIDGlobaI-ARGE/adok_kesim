@@ -472,5 +472,19 @@
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
+    <TextView
+        android:id="@+id/tv_debug_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/opensans_bold"
+        android:text="DEBUG"
+        android:visibility="gone"
+        android:textColor="@color/red"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/navbar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
